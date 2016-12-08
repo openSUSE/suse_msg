@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import re
+import logging
 import suse_msg.meta as meta
 
 def format_xterm(text, fg=None, bg=None):
@@ -74,11 +75,8 @@ class MsgFormatter(object):
     def __init__(self, hide_raw=False):
         self.hide_raw = hide_raw
         self.processors = {}
-        #import pkg_resources
-        #for processor in pkg_resources.iter_entry_points('suse_msg.meta'):
         for processor in meta.get_processors():
-            #FIXME: log
-            print("Loading processor '%s'" % processor.__name__)
+            logging.info("Loading processor '%s'" % processor.__name__)
             self.processors[re.compile(processor.topic_regex)] = processor
 
     def fmt(self, topic, msg, colors='irc'):
@@ -86,7 +84,6 @@ class MsgFormatter(object):
         for rtopic, processor in self.processors.items():
             if rtopic.match(topic):
                 return processor(topic, msg).fmt(colorizer)
-        #FIXME: debug: warning: no processor for msg
-        print("no processor for topic %s" % topic)
+        logging.warning("no processor for topic %s" % topic)
         if not self.hide_raw:
             return '%s -> %s' % (topic, msg)

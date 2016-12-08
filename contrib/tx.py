@@ -3,7 +3,7 @@
 import pika
 import sys
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='clayton.arch'))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='kazhua.suse.de'))
 channel = connection.channel()
 
 channel.exchange_declare(exchange='pubsub', type='topic')
