@@ -36,7 +36,12 @@ def format_xterm(text, fg=None, bg=None):
 
 def format_irc(text, fg=None, bg=None):
     def seq(fg, bg):
-        return "\x03%01i,%01i" % (fg, bg)
+        s = "\x03"
+        if fg != 99:
+            s += "%01i" % fg
+            if bg != 99:
+                s += "%01i" % bg
+        return s
     colors = {
         'lightgray':    0,
         'black':        1,
