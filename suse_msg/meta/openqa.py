@@ -48,7 +48,7 @@ class OpenQAProcessor(BaseProcessor):
         }.get(self.event, '%sed' % self.event)
         
     def job_url(self):
-        return self.base_url() + "tests/%i" % int(self.msg['id'])
+        return self.base_url() + "t%i" % int(self.msg['id'])
 
     def base_url(self):
         if self.scope == 'suse':
