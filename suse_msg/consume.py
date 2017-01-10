@@ -26,13 +26,18 @@ config = {
         "server": "irc.suse.de",
         "port": 6697,
         "nickname": "hermes",
-        "join_channels": False
+        "join_channels": True
     },
     "routing": {
-        #"#openqa-test": [
-        #    ("suse.openqa.#", lambda t, m: not t.endswith('comment.created') or "group_id" in m),
-        #    ("opensuse.openqa.#", lambda t, m: "foo" in m),
-        #],
+        "#openqa-test": [
+            #("suse.openqa.#", lambda t, m: not t.endswith('comment.create') or "group_id" in m),
+            #("*.openqa.comment.#", lambda ...),
+            "*.openqa.comment.*",
+            #("opensuse.openqa.#", lambda t, m: "foo" in m),
+        ],
+        "#qa-review": [
+            ("*.openqa.comment.create", lambda t, m: m.get('group_id')),
+        ],
         "#openqa-events": [
             "suse.openqa.#",
             "opensuse.openqa.#",
