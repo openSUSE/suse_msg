@@ -20,6 +20,14 @@ class OpenQAProcessor(BaseProcessor):
                 s += " with result "
                 s += self.colored_job_result(c)
             s += ": " + self.job_url()
+        elif self.object == 'comment':
+            if self.event == 'create':
+                if self.is_group_event():
+                    s += " on job group "
+                if self.is_job_event():
+                    s += " on job "
+                s += "by %(user)s" % self.msg
+                s += ": " + self.comment_url()
         return s
 
     def colored_job_result(self, c):
@@ -49,6 +57,19 @@ class OpenQAProcessor(BaseProcessor):
         
     def job_url(self):
         return self.base_url() + "t%i" % int(self.msg['id'])
+
+    def comment_url(self):
+        if self.is_group_event():
+            path = "group_overview/%i" % int(self.msg['group_id'])
+        elif self.is_job_event():
+            path = "t%i" % int(self.msg['job_id'])
+        return "%s%s#comment-%i" % (self.base_url(), path, int(self.msg['id']))
+
+    def is_group_event(self):
+        return bool(self.msg.get('group_id'))
+
+    def is_job_event(self):
+        return bool(self.msg.get('job_id'))
 
     def base_url(self):
         if self.scope == 'suse':
