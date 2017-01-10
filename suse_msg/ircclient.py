@@ -24,14 +24,12 @@ class IRCClient(irc.client.SimpleIRCClient):
     def on_disconnect(self, connection, event):
         sys.exit(0)
 
-    def notice(self, text, channels=None):
-        if text:
-            channels = channels if channels else self.channels
+    def notice(self, text, channels):
+        if text and channels:
             self.connection.notice(','.join(channels), text)
 
-    def privmsg(self, text, channels=None):
-        if text:
-            channels = channels if channels else self.channels
+    def privmsg(self, text, channels):
+        if text and channels:
             self.connection.privmsg(','.join(channels), text)
 
     def quit(self):
