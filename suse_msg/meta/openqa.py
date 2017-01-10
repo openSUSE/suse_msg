@@ -21,12 +21,12 @@ class OpenQAProcessor(BaseProcessor):
                 s += self.colored_job_result(c)
             s += ": " + self.job_url()
         elif self.object == 'comment':
-            if self.event == 'create':
-                if self.is_group_event():
-                    s += " on job group "
-                if self.is_job_event():
-                    s += " on job "
-                s += "by %(user)s" % self.msg
+            if self.is_group_event():
+                s += " on job group "
+            if self.is_job_event():
+                s += " on job "
+            s += "by %(user)s" % self.msg
+            if self.event != 'delete':
                 s += ": " + self.comment_url()
         return s
 
