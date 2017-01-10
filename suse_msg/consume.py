@@ -29,11 +29,16 @@ config = {
         "join_channels": False
     },
     "routing": {
-        "*.info": ["#foobar123", "#foobar456"],
-        "suse.#": ["#foobar123"]
+        #"#openqa-test": [
+        #    ("suse.openqa.#", lambda t, m: not t.endswith('comment.created') or "group_id" in m),
+        #    ("opensuse.openqa.#", lambda t, m: "foo" in m),
+        #],
+        "#openqa-events": [
+            "suse.openqa.#",
+            "opensuse.openqa.#",
+        ],
     }
 }
-
 
 
 router = Router(config['routing'])
@@ -53,7 +58,7 @@ def msg_cb(ch, method, properties, body):
         logging.warning("Invalid msg: %r -> %r" % (topic, body))
     else:
         print("%s: %s" % (topic, formatter.fmt(topic, msg, colors='xterm')))
-        ircc.notice(formatter.fmt(topic, msg), router.topic_channels(topic))
+        ircc.notice(formatter.fmt(topic, msg), router.target_channels(topic, msg))
 
 
 while True:
@@ -67,7 +72,7 @@ while True:
         result = channel.queue_declare(exclusive=True)
         queue_name = result.method.queue
 
-        for binding_key in config['routing'].keys():
+        for binding_key in router.keys:
             channel.queue_bind(exchange=config['amqp']['exchange'], queue=queue_name, routing_key=binding_key)
 
         channel.basic_consume(msg_cb, queue=queue_name, no_ack=True)

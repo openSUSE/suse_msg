@@ -5,15 +5,30 @@ import re
 class Router(object):
     def __init__(self, routing_table):
         self.routing_table = {}
-        self.channels = set()
-        for key, channels in routing_table.items():
-            self.channels.update(channels)
-            rkey = key.replace('.', '\.').replace('*', '[^.]*').replace('#', '.*')
-            self.routing_table[re.compile(rkey)] = channels
+        self.keys = set()
+        for channel, rules in routing_table.items():
+            rrules = []
+            for rule in rules:
+                if isinstance(rule, str):
+                    rrules.append((self.key_to_regex(rule), lambda t, m: True))
+                elif isinstance(rule, tuple):
+                    rrules.append((self.key_to_regex(rule[0]), rule[1]))
+            self.routing_table[channel] = rrules
 
-    def topic_channels(self, topic):
+    def key_to_regex(self, key):
+        self.keys.add(key)
+        return re.compile(key.replace('.', '\.').replace('*', '[^.]*').replace('#', '.*'))
+
+    def target_channels(self, topic, msg):
         destination_channels = set()
-        for rkey, channels in self.routing_table.items():
-            if rkey.match(topic):
-                destination_channels.update(channels)
+        for channel, rules in self.routing_table.items():
+            for rule in rules:
+                rkey, filter_matches = rule
+                if rkey.match(topic) and filter_matches(topic, msg):
+                    destination_channels.add(channel)
+                    break
         return destination_channels
+
+    @property
+    def channels(self):
+        return set(self.routing_table.keys())
