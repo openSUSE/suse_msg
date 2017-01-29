@@ -37,10 +37,12 @@ config = {
         ],
         "#qa-review": [
             ("*.openqa.comment.create", lambda t, m: m.get('group_id')),
+            "suse.tumblesle.release",
         ],
         "#openqa-events": [
             "suse.openqa.#",
             "opensuse.openqa.#",
+            "suse.tumblesle.#",
         ],
     }
 }
