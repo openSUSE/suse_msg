@@ -6,6 +6,12 @@ from suse_msg.meta import BaseProcessor
 MSG_LIMIT = 400
 
 
+def truncate(s):
+    if len(s) > MSG_LIMIT:
+        s = s[0:MSG_LIMIT] + '…'
+    return s
+
+
 class TumbleSLEProcessor(BaseProcessor):
     topic_regex = r"(?P<scope>[^.]+)\.tumblesle\.(?P<event>[^.]+)"
 
@@ -16,10 +22,8 @@ class TumbleSLEProcessor(BaseProcessor):
 
     def fmt(self, c):
         result = self.colored_result(c)
-        msg = ', '.join('%s: %s' % (k, v) for k, v in self.msg.items())
         # prevent irc.client.MessageTooLong
-        if len(msg) > MSG_LIMIT:
-            msg = msg[0:MSG_LIMIT] + '…'
+        msg = ', '.join('%s: %s' % (k, truncate(v)) for k, v in self.msg.items())
         s = "tumbleSLE %s: %s" % (result, msg)
         return s
 
