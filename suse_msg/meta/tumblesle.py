@@ -12,6 +12,12 @@ def truncate(s):
     return s
 
 
+def comma_entries(l):
+    if type(l) is not list:
+        return l
+    return ', '.join(l)
+
+
 class TumbleSLEProcessor(BaseProcessor):
     topic_regex = r"(?P<scope>[^.]+)\.tumblesle\.(?P<event>[^.]+)"
 
@@ -23,7 +29,7 @@ class TumbleSLEProcessor(BaseProcessor):
     def fmt(self, c):
         result = self.colored_result(c)
         # prevent irc.client.MessageTooLong
-        msg = ', '.join('%s: %s' % (k, truncate(v)) for k, v in self.msg.items())
+        msg = ', '.join('%s: %s' % (k, truncate(comma_entries(v))) for k, v in self.msg.items())
         s = "tumbleSLE %s: %s" % (result, msg)
         return s
 
