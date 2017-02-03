@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 
 config = {
     "amqp": {
-        "server": "amqp://guest:guest@kazhua.suse.de/",
+        "server": "amqps://suse:suse@rabbit.suse.de",
         "exchange": "pubsub",
         "auto_reconnect": 5
     },
