@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 
 config = {
     "amqp": {
-        "server": "amqp://guest:guest@kazhua.suse.de/",
+        "server": "amqps://suse:suse@rabbit.suse.de",
         "exchange": "pubsub",
         "auto_reconnect": 5
     },
@@ -74,7 +74,7 @@ while True:
         connection = pika.BlockingConnection(pika.URLParameters(config['amqp']['server']))
         channel = connection.channel()
 
-        channel.exchange_declare(exchange=config['amqp']['exchange'], type='topic')
+        channel.exchange_declare(exchange=config['amqp']['exchange'], type='topic', passive=True, durable=True)
 
         result = channel.queue_declare(exclusive=True)
         queue_name = result.method.queue
