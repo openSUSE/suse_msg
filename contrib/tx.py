@@ -3,7 +3,7 @@
 import pika
 import sys
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='kazhua.suse.de'))
+connection = pika.BlockingConnection(pika.URLParameters("amqps://openqa:secret@proxy-opensuse.suse.de?heartbeat_interval=5"))
 channel = connection.channel()
 
 channel.exchange_declare(exchange='pubsub', type='topic', passive=True, durable=True)
