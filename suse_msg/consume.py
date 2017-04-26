@@ -5,6 +5,7 @@ import sys
 import json
 import logging
 import time
+import requests
 
 import os
 import sys 
@@ -15,6 +16,13 @@ from suse_msg.router import Router
 from suse_msg.msgfmt import MsgFormatter
 
 logging.basicConfig(level=logging.INFO)
+
+def check_hpc_exists(m):
+    try:
+        return 'HPC' in requests.get("https://openqa.suse.de/api/v1/jobs/%i" % m['id']).json()['job']['settings']
+    except ValueError:
+        logging.error("Value Error when parsing json for job %i" % m['id'])
+        return True
 
 config = {
     "amqp": {
@@ -44,6 +52,11 @@ config = {
             "opensuse.openqa.#",
             "suse.tumblesle.#",
         ],
+        "#hpc-builds": [
+            ("suse.openqa.job.done",lambda t, m: m.get('group_id')==91),
+            ("suse.openqa.job.done",lambda t, m: m.get('group_id')==71),
+            ("suse.openqa.job.done",lambda t, m: m.get('group_id')==54 and check_hpc_exists(m))
+        ]
     }
 }
 
