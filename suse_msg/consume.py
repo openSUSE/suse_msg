@@ -42,6 +42,7 @@ config = {
             #("*.openqa.comment.#", lambda ...),
             "*.openqa.comment.*",
             #("opensuse.openqa.#", lambda t, m: "foo" in m),
+            #"suse.tumblesle.#",
         ],
         "#qa-review": [
             ("*.openqa.comment.create", lambda t, m: m.get('group_id')),
@@ -53,9 +54,9 @@ config = {
             "suse.tumblesle.#",
         ],
         "#hpc-builds": [
-            ("suse.openqa.job.done",lambda t, m: m.get('group_id')==91),
-            ("suse.openqa.job.done",lambda t, m: m.get('group_id')==71),
-            ("suse.openqa.job.done",lambda t, m: m.get('group_id')==54 and check_hpc_exists(m))
+            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 91),
+            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 71),
+            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 54 and check_hpc_exists(m))
         ]
     }
 }
