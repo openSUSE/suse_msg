@@ -17,12 +17,6 @@ from suse_msg.msgfmt import MsgFormatter
 
 logging.basicConfig(level=logging.INFO)
 
-def check_hpc_exists(m):
-    try:
-        return 'HPC' in requests.get("https://openqa.suse.de/api/v1/jobs/%i" % m['id']).json()['job']['settings']
-    except ValueError:
-        logging.error("Value Error when parsing json for job %i" % m['id'])
-        return True
 
 config = {
     "amqp": {
@@ -56,7 +50,7 @@ config = {
         "#hpc-builds": [
             ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 91),
             ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 71),
-            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 54 and check_hpc_exists(m))
+            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 54 and m.get('TEST').startswith("hpc_"))
         ]
     }
 }
