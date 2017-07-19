@@ -8,7 +8,7 @@ import time
 import requests
 
 import os
-import sys 
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + '/..'))
 from suse_msg.ircclient import IRCClient
@@ -50,6 +50,9 @@ config = {
         "#hpc-builds": [
             ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 91),
             ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 71),
+            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 102),
+            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 103),
+            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 104),
             ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 54 and m.get('TEST').startswith("hpc_"))
         ]
     }
