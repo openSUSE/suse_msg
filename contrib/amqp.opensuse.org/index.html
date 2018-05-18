@@ -60,29 +60,30 @@
           <h2>Live events</h2>
           <div id="event"><pre><b>Waiting for events…</b></pre></div>
           <script type="text/javascript">
-          window.onload = function(e) {
-              var eventOutputContainer = document.getElementById("event");
-              var evtSrc = new EventSource("/cgi-bin/webevents.py");
+              window.onload = function(e) {
+                  var eventOutputContainer = document.getElementById("event");
+                  var evtSrc = new EventSource("/cgi-bin/webevents.py");
 
-              evtSrc.onmessage = function(e) {
-                  var event = JSON.parse(e.data);
-                  var topic = event.topic;
-                  var body = event.body;
-                  console.info(topic);
+                  evtSrc.onmessage = function(e) {
+                      var event = JSON.parse(e.data);
+                      var topic = event.topic;
+                      var body = event.body;
+                      console.info(topic);
 
-                  console.log(e.data);
-                  eventOutputContainer.innerHTML = "<pre><b>"+topic+"</b><br />"+JSON.stringify(body, null, 3)+"</pre>";
-              };
-          }
+                      console.log(e.data);
+                      eventOutputContainer.innerHTML = "<pre><b>"+topic+"</b><br />"+JSON.stringify(body, null, 3)+"</pre>";
+                  };
+              }
           </script>
-         <style type="text/css">
-            #event pre {
-                overflow-x: hidden;
-                text-overflow: ellipsis;
-                height: 15em;
-                width: 100%;
-            }
-         </style>
+          <style type="text/css">
+              #event pre {
+                  overflow-x: hidden;
+                  text-overflow: ellipsis;
+                  height: 15em;
+                  width: 100%;
+                  resize: vertical;
+              }
+          </style>
 
 
           <h2>About</h2>
