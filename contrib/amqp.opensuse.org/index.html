@@ -58,7 +58,7 @@
       <h1>openSUSE AMQP service</h1>
       <div class="media-body">
           <h2>Live events</h2>
-          <div id="event"><pre><b>Waiting for events…</b></pre></div>
+          <div><pre id="event"><b>Waiting for events…</b></pre></div>
           <script type="text/javascript">
               window.onload = function(e) {
                   var eventOutputContainer = document.getElementById("event");
@@ -71,12 +71,12 @@
                       console.info(topic);
 
                       console.log(e.data);
-                      eventOutputContainer.innerHTML = "<pre><b>"+topic+"</b><br />"+JSON.stringify(body, null, 3)+"</pre>";
+                      eventOutputContainer.innerHTML = "<b>"+topic+"</b><br />"+JSON.stringify(body, null, 3);
                   };
               }
           </script>
           <style type="text/css">
-              #event pre {
+              #event {
                   overflow-x: hidden;
                   text-overflow: ellipsis;
                   height: 15em;
