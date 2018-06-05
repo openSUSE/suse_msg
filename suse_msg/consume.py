@@ -41,11 +41,13 @@ config = {
         "#qa-review": [
             ("*.openqa.comment.create", lambda t, m: m.get('group_id')),
             "suse.tumblesle.#",
+            "suse.ttm.#",
         ],
         "#openqa-events": [
             "suse.openqa.#",
             "opensuse.openqa.#",
             "suse.tumblesle.#",
+            "suse.ttm.#",
         ],
         "#hpc-builds": [
             ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 91),
