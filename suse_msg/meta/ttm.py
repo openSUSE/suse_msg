@@ -7,7 +7,7 @@ from suse_msg.meta import BaseProcessor
 logging.basicConfig(level=logging.INFO)
 
 
-MSG_LIMIT = 60
+MSG_LIMIT = 220
 
 # limit of how many times a truncated message has to show up the same before we repeat it
 SEEN_LIMIT = 1
