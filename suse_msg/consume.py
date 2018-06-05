@@ -35,13 +35,13 @@ config = {
             #("suse.openqa.#", lambda t, m: not t.endswith('comment.create') or "group_id" in m),
             #("*.openqa.comment.#", lambda ...),
             "*.openqa.comment.*",
+            "suse.ttm.#",
             #("opensuse.openqa.#", lambda t, m: "foo" in m),
             #"suse.tumblesle.#",
         ],
         "#qa-review": [
             ("*.openqa.comment.create", lambda t, m: m.get('group_id')),
             "suse.tumblesle.#",
-            "suse.ttm.#",
         ],
         "#openqa-events": [
             "suse.openqa.#",
