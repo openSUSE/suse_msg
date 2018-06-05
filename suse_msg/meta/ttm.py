@@ -49,12 +49,13 @@ class TTMProcessor(BaseProcessor):
                 s += " - unknown fails: "
                 s += truncate(' '.join(["%st%i" % (self.base_url(), buildid) for buildid in self.msg['failed_jobs']['relevant']]))
 
-        if s in SEEN:
-            logging.info("Ignoring already seen message '%s'" % s)
-            return ''
-        else:
-            logging.info("not found s in self.seen. self.seen: %s" % SEEN)
-        SEEN.append(s)
+        if 'irc' in repr(c): # I know this is bad :P
+            if s in SEEN:
+                logging.info("Ignoring already seen message '%s'" % s)
+                return ''
+            else:
+                logging.info("not found s in self.seen. self.seen: %s" % SEEN)
+            SEEN.append(s)
         return s
 
     def colored_result(self, c):
