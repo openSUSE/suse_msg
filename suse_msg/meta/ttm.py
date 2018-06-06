@@ -1,5 +1,6 @@
 import logging
 import re
+import requests
 from collections import deque
 from suse_msg.meta import BaseProcessor
 
@@ -39,15 +40,23 @@ class TTMProcessor(BaseProcessor):
             # only build object output is implemented
             return ''
 
+
         s = "TTM: %s build %s " % (self.msg['project'], self.msg['build'])
         s += self.colored_result(c)
 
         if self.event != 'pass':
             if len(self.msg['failed_jobs']['relevant']) == 0:
-                s += " - not unknown fails" + ' yet!' if self.event == 'inprogress' else '!'
+                s += ' - not unknown fails' + ' yet!' if self.event == 'inprogress' else '!'
             else:
-                s += " - unknown fails: "
-                s += truncate(' '.join(["%st%i" % (self.base_url(), buildid) for buildid in self.msg['failed_jobs']['relevant']]))
+                s += ' - unknown fails: '
+                url = self.base_url() + 'tests/overview?result=failed&result=incomplete&build=%(build)s' % self.msg
+                if self.msg['project'] == 'SUSE:SLE-15:GA':
+                    url += '&groupid=110'
+                elif self.msg['project'] == 'openSUSE:Factory':
+                    url += '&groupid=1'
+                label = self.msg['project'].lower().replace(':', '_') + "_" + self.msg['build'] + '_fails'
+                shorturl = requests.post('http://s.qa.suse.de/', data={'url': url, 'wishId': label}).text
+                s += shorturl
 
         if 'irc' in repr(c): # I know this is bad :P
             if s in SEEN:
