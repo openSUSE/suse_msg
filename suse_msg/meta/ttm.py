@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 MSG_LIMIT = 220
 
 # limit of how many times a truncated message has to show up the same before we repeat it
-SEEN_LIMIT = 1
+SEEN_LIMIT = 4
 SEEN = deque(maxlen=SEEN_LIMIT)
 
 def truncate(s):
