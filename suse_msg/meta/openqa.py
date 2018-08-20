@@ -23,6 +23,8 @@ class OpenQAProcessor(BaseProcessor):
         elif self.object == 'comment':
             if self.is_group_event():
                 s += " on job group "
+            if self.is_parent_group_event():
+                s += " on parent group "
             if self.is_job_event():
                 s += " on job "
             s += "by %(user)s" % self.msg
@@ -61,12 +63,17 @@ class OpenQAProcessor(BaseProcessor):
     def comment_url(self):
         if self.is_group_event():
             path = "group_overview/%i" % int(self.msg['group_id'])
+        elif self.is_parent_group_event():
+            path = "parent_group_overview/%i" % int(self.msg['parent_group_id'])
         elif self.is_job_event():
             path = "t%i" % int(self.msg['job_id'])
         return "%s%s#comment-%i" % (self.base_url(), path, int(self.msg['id']))
 
     def is_group_event(self):
         return bool(self.msg.get('group_id'))
+
+    def is_parent_group_event(self):
+        return bool(self.msg.get('parent_group_id'))
 
     def is_job_event(self):
         return bool(self.msg.get('job_id'))
