@@ -29,7 +29,9 @@ class OpenQAProcessor(BaseProcessor):
                 s += " on job "
             s += "by %(user)s" % self.msg
             if self.event != 'delete':
-                s += ": " + self.comment_url()
+                url = self.comment_url()
+                if url:
+                    s += ": " + url
         return s
 
     def colored_job_result(self, c):
@@ -67,6 +69,8 @@ class OpenQAProcessor(BaseProcessor):
             path = "parent_group_overview/%i" % int(self.msg['parent_group_id'])
         elif self.is_job_event():
             path = "t%i" % int(self.msg['job_id'])
+        else:
+            return None
         return "%s%s#comment-%i" % (self.base_url(), path, int(self.msg['id']))
 
     def is_group_event(self):
