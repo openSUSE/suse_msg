@@ -48,14 +48,6 @@ config = {
             "opensuse.openqa.#",
             "suse.tumblesle.#",
             "suse.ttm.#",
-        ],
-        "#hpc-builds": [
-            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 91),
-            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 71),
-            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 102),
-            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 103),
-            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 104),
-            ("suse.openqa.job.done", lambda t, m: m.get('group_id') == 54 and m.get('TEST').startswith("hpc_"))
         ]
     }
 }
