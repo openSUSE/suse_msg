@@ -19,6 +19,8 @@ class OpenQAProcessor(BaseProcessor):
             if self.event == 'done':
                 s += " with result "
                 s += self.colored_job_result(c)
+                if self.msg.get('result') == 'failed':
+                    s += " (%s)" % self.msg.get('bugref', 'review pending')
             s += ": " + self.job_url()
         elif self.object == 'comment':
             if self.is_group_event():
