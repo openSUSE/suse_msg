@@ -40,7 +40,7 @@ config = {
             #"suse.tumblesle.#",
         ],
         "#qa-review": [
-            ("*.openqa.comment.create", lambda t, m: m.get('group_id')),
+            ("*.openqa.comment.create", lambda t, m: m.get('group_id') or m.get('parent_group_id')),
             "suse.tumblesle.#",
         ],
         "#openqa-events": [
